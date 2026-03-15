@@ -25,7 +25,7 @@ st.markdown("""
 
 # --- LOGO EKLEME (GitHub'daki logo.png dosyasını çeker) ---
 # Not: Eğer logonun uzantısı .jpg ise aşağıdaki satırı logo.jpg olarak düzeltmelisin.
-st.image("logo.png", width=180) 
+st.image("20260314_043409.png", width=180) 
 
 st.title("GÖKAI Prompt Studio")
 st.markdown("<p style='text-align: center; color: #E0E0E0;'>Yapay Zeka İçerik ve Prompt Asistanı</p>", unsafe_allow_html=True)
