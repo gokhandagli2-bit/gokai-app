@@ -24,7 +24,7 @@ st.markdown("""
 
 # Logo Yükleme
 if os.path.exists("logo.png"):
-    st.image("logo.png", width=180)
+    st.image("20260314_043409.png", width=180)
 
 st.title("GÖKAI Prompt Studio")
 st.markdown("<p style='text-align: center; color: #E0E0E0;'>Yapay Zeka İçerik Asistanı</p>", unsafe_allow_html=True)
