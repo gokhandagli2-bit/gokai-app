@@ -23,7 +23,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # Logo Yükleme
-if os.path.exists("logo.png"):
+if os.path.exists("20260314_043409.png"):
     st.image("20260314_043409.png", width=180)
 
 st.title("GÖKAI Prompt Studio")
