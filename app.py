@@ -1,51 +1,69 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- SAYFA AYARLARI ---
+# --- TASARIM AYARLARI ---
 st.set_page_config(page_title="GÖKAI Prompt Studio", page_icon="🚀", layout="centered")
 
-# --- GÖKAI LOGO VE BAŞLIK ---
+# Özel CSS: Arka plan siyah, butonlar Telef10 yeşili, başlıklar GÖKAI mavisi
+st.markdown("""
+    <style>
+    .stApp { background-color: #0E1117; }
+    .stButton>button {
+        background-color: #2E7D32; 
+        color: white;
+        border-radius: 12px;
+        font-weight: bold;
+        border: none;
+        width: 100%;
+        height: 3.5em;
+        transition: 0.3s;
+    }
+    .stButton>button:hover { background-color: #1B5E20; border: 1px solid #00E5FF; }
+    h1 { color: #00E5FF; text-align: center; text-shadow: 0px 0px 10px #00E5FF; }
+    div[data-testid="stMarkdownContainer"] > p { color: #E0E0E0; }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- BAŞLIK ---
 st.title("🚀 GÖKAI Prompt Studio")
-st.subheader("Yapay Zeka İçerik Asistanı")
+st.markdown("<p style='text-align: center;'>Yapay Zeka İçerik ve Prompt Asistanı</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# --- API ANAHTARI GİRİŞİ (Sol Menü) ---
+# --- YAN MENÜ ---
 with st.sidebar:
-    st.header("⚙️ Ayarlar")
-    api_key = st.text_input("Gemini API Anahtarınızı Buraya Yapıştırın:", type="password")
-    st.info("API anahtarınızı 'Google AI Studio' sitesinden ücretsiz alabilirsiniz.")
+    st.header("⚙️ Kontrol Paneli")
+    api_key = st.text_input("Gemini API Anahtarınızı Girin:", type="password")
+    st.markdown("---")
+    st.write("📺 **Kanallarımız:**")
+    st.write("👉 [Telef10 YouTube](https://youtube.com/@Telef10)")
+    st.write("👉 [Gökhan Müzik](https://youtube.com/@GokhanMuzik)")
 
-# --- ANA PROGRAM MANTIĞI ---
+# --- ANA EKRAN ---
 if api_key:
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-1.5-flash')
 
-        # Seçenek Menüsü
-        mod = st.radio("Hangi türde prompt istersiniz?", ["🖼️ Resim (Midjourney/DALL-E)", "🎵 Müzik (Suno/Eita)"])
-        
-        user_input = st.text_input("Hayalinizdeki içeriği kısaca tarif edin:", placeholder="Örn: Modern bir mutfakta sağlıklı salata tabağı...")
+        mod = st.selectbox("Ne oluşturmak istersiniz?", ["🖼️ Görsel Prompt (Resim)", "🎵 Müzik Prompt (Suno/Eita)"])
+        user_input = st.text_area("Hayalinizdeki detayı yazın:", placeholder="Örn: Anadolu rock tarzında hüzünlü bir parça...")
 
-        if st.button("GÖKAI Sihrini Başlat"):
+        if st.button("GÖKAI SİHRİNİ BAŞLAT"):
             if user_input:
-                with st.spinner('GÖKAI sizin için en iyi parametreleri hesaplıyor...'):
-                    # Prompt Mühendisliği Talimatları
-                    if "Resim" in mod:
-                        master_prompt = f"Sen profesyonel bir görsel tasarımcısın. Şu isteği 8k, ultra-realistic, cinematic lighting ve detaylı dokular içeren profesyonel bir Midjourney/DALL-E promptuna dönüştür: {user_input}"
+                with st.spinner('GÖKAI sizin için en iyi parametreleri hazırlıyor...'):
+                    if "Görsel" in mod:
+                        prompt = f"Sen usta bir görsel sanatçısın. {user_input} isteğini; 8k, photorealistic, cinematic lighting ve Unreal Engine 5 kalitesinde bir resim promptuna dönüştür."
                     else:
-                        master_prompt = f"Sen bir müzik prodüktörüsün. Şu isteği Suno AI için teknik terimler (BPM, tür, enstrüman) içeren bir prompta dönüştür. Vokal tarzı olarak 'Gökhan Keser Style Male Vocals' ve 'Professional Mix' ibarelerini mutlaka ekle: {user_input}"
+                        prompt = f"Sen bir müzik prodüktörüsün. {user_input} isteğini Suno AI için; BPM, tür, enstrümanlar ve 'Gökhan Keser Style' vokal tanımıyla teknik bir prompta dönüştür."
                     
-                    response = model.generate_content(master_prompt)
-                    
-                    st.success("İşte profesyonel promptunuz hazır!")
+                    response = model.generate_content(prompt)
+                    st.success("✅ Profesyonel Prompt Hazır!")
                     st.code(response.text, language='text')
-                    st.caption("Yukarıdaki kodu kopyalayıp ilgili yapay zeka aracında kullanabilirsiniz.")
             else:
-                st.warning("Lütfen bir fikir yazın.")
+                st.warning("Lütfen bir açıklama yazın.")
     except Exception as e:
-        st.error(f"Bir hata oluştu: {e}")
+        st.error(f"Bir bağlantı hatası oldu: {e}")
 else:
-    st.warning("⚠️ Devam etmek için lütfen sol menüye API anahtarınızı girin.")
+    st.info("👋 Hoş geldin ortağım! Başlamak için sol menüye API anahtarını girmelisin.")
 
 st.markdown("---")
-st.write("© 2026 GÖKAI Dijital Projeler - Telef10 İşbirliği ile")
+st.caption("© 2026 GÖKAI Digital - Tüm Hakları Saklıdır.")
